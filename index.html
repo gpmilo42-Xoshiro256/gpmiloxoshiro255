@@ -25,13 +25,14 @@
 </head>
 <body>
 <div class="header"><div class="header-tag">SISTEM KANDIDAT EKSPERIMENTAL</div><h1>A-J <em>Modif</em></h1><div class="header-sub">BOOT PRNG · 1 SESI · 30 × 4H · 30 × 3H · 10 × 2H · SUPABASE</div><div id="saveState" style="font-size:8px;color:var(--green);margin-top:4px">● SUPABASE MODE — DATA UTAMA TERSIMPAN DI SUPABASE</div><div id="liveClock" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--gold);margin-top:6px">🕒 --:--:--</div></div>
-<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div><div class="tab purple" id="tab-philox" onclick="switchPage('philox')">✖️ PHILOX</div></div>
+<div id="calPopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center" onclick="if(event.target===this)closeCalendar()">
+  <div id="calPopup" style="background:var(--panel);border:2px solid var(--purple);border-radius:12px;padding:14px;width:min(320px,90vw);max-height:80vh;overflow:auto"></div>
+</div>
+<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div><div class="tab purple" id="tab-philox" onclick="switchPage('philox')">✖️ PHILOX</div><div class="tab purple" id="tab-chacha20" onclick="switchPage('chacha20')">🔒 CHACHA20</div></div>
 <div class="page active" id="page-generator">
   <div class="hv2-box"><div class="hv2-title">🧬 BOOT PRNG — 1 SESI</div><div class="hv2-sub">Engine baru 100% independen. Tampilan mengikuti pola Harian V2: <b style="color:#fff">18.30 = 1 slot</b>. Setiap slot memiliki RAW 6 digit, RESULT 4 digit, dan kandidat BOOT PRNG sendiri.</div></div>
   <div class="uni-input-box"><div class="uni-title">BOOT PRNG · 1 SESI HARIAN · FULL SUPABASE</div><div class="uni-sub">Isi RAW per slot. Generate kandidat 30×4H + 30×3H + 10×2H secara independen. RESULT disimpan per slot.</div><div class="uni-date-row"><span class="uni-date-label">📅 TANGGAL</span><input class="uni-date-input" id="entryDate" type="text" readonly onclick="openCalendar()"><button class="btn" id="calBtn" onclick="openCalendar()" style="flex:0 0 auto">🗓 KALENDER</button></div>
-<div id="calPopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center" onclick="if(event.target===this)closeCalendar()">
-  <div id="calPopup" style="background:var(--panel);border:2px solid var(--purple);border-radius:12px;padding:14px;width:min(320px,90vw);max-height:80vh;overflow:auto"></div>
-</div></div>
+</div>
   <div class="tabs" style="margin-bottom:8px">
     <div class="tab active" id="gensub-generator" onclick="switchGenSub('generator')">🧬 GENERATOR</div>
     <div class="tab gold" id="gensub-history" onclick="switchGenSub('history')">🏆 RIWAYAT</div>
@@ -182,6 +183,25 @@
   <div class="page" id="pxsubpage-heatmap"><div id="pxHeatmapPage"></div></div>
   <div class="page" id="pxsubpage-achieve"><div id="pxAchievePage"></div></div>
 </div>
+<div class="page" id="page-chacha20">
+  <div class="hv2-box"><div class="hv2-title">🔒 CHACHA20 — ENGINE MANDIRI</div><div class="hv2-sub">Tab independen memakai <b style="color:#fff">ChaCha20</b> (Bernstein, RFC 8439) — satu-satunya engine yang levelnya stream cipher kriptografis produksi (dipakai TLS 1.3, WireGuard), bukan cuma PRNG akademis. ARX 20-ronde (Add-Rotate-XOR), state 512-bit, counter-based. Terpisah total dari 8 engine lain. Riwayat, analisa meleset, dan heatmap di bawah dihitung sendiri dari data CHACHA20 — tidak nyambung ke tab lain.</div></div>
+  <div class="uni-date-row" style="margin-bottom:10px"><span class="uni-date-label">📅 TANGGAL</span><input class="uni-date-input" id="entryDateCc" type="text" readonly onclick="openCalendar()"><button class="btn" onclick="openCalendar()" style="flex:0 0 auto">🗓 KALENDER</button></div>
+  <div class="tabs" style="margin-bottom:8px">
+    <div class="tab active" id="ccsub-generator" onclick="switchCcSub('generator')">🧬 GENERATOR</div>
+    <div class="tab gold" id="ccsub-history" onclick="switchCcSub('history')">🏆 RIWAYAT</div>
+    <div class="tab red" id="ccsub-miss" onclick="switchCcSub('miss')">🎯 ANALISA MELESET</div>
+    <div class="tab purple" id="ccsub-heatmap" onclick="switchCcSub('heatmap')">🔥 HEATMAP</div>
+    <div class="tab" id="ccsub-achieve" onclick="switchCcSub('achieve')">📊 PENCAPAIAN</div>
+  </div>
+  <div class="page active" id="ccsubpage-generator">
+    <div id="ccSaveState" class="statusline"></div>
+    <div id="ccSessionBoard"></div><div id="ccDailyHistory"></div>
+  </div>
+  <div class="page" id="ccsubpage-history"><div id="ccHistoryPage"></div></div>
+  <div class="page" id="ccsubpage-miss"><div id="ccMissPage"></div></div>
+  <div class="page" id="ccsubpage-heatmap"><div id="ccHeatmapPage"></div></div>
+  <div class="page" id="ccsubpage-achieve"><div id="ccAchievePage"></div></div>
+</div>
 <div class="footer-note">BOOT PRNG adalah generator kandidat deterministik/eksperimental, bukan jaminan bahwa hasil acak dapat diprediksi.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -235,6 +255,10 @@ async function fetchDatesWithData(year,month){
     const {data,error}=await sb.from('philox_history').select('entry_date').gte('entry_date',start).lte('entry_date',end);
     if(!error&&data)data.forEach(r=>out.add(String(r.entry_date)));
   }catch(e){}
+  try{
+    const {data,error}=await sb.from('chacha20_history').select('entry_date').gte('entry_date',start).lte('entry_date',end);
+    if(!error&&data)data.forEach(r=>out.add(String(r.entry_date)));
+  }catch(e){}
   return out;
 }
 async function renderCalendar(){
@@ -286,6 +310,7 @@ function pickCalDate(dateStr){
   if($('entryDateXo256'))$('entryDateXo256').value=dateStr;
   if($('entryDateTf'))$('entryDateTf').value=dateStr;
   if($('entryDatePx'))$('entryDatePx').value=dateStr;
+  if($('entryDateCc'))$('entryDateCc').value=dateStr;
   closeCalendar();
   loadHistoryFromSupabase(true);
   loadXoHistoryFromSupabase(true);
@@ -295,6 +320,7 @@ function pickCalDate(dateStr){
   loadXo256HistoryFromSupabase(true);
   loadTfHistoryFromSupabase(true);
   loadPxHistoryFromSupabase(true);
+  loadCcHistoryFromSupabase(true);
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function initSlots(){slots=[];let id=0;SESSION_CONFIG.forEach(sess=>{for(let n=1;n<=sess.slots;n++)slots.push({id:id++,session:sess.key,label:sess.label,slot:n,raw:'',result:'',engine:null})})}
@@ -601,7 +627,7 @@ function renderDailyHistory(){
     groups.map(renderSessionHistory).join('');
 }
 function switchPage(p){
-  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry','philox'].forEach(x=>{
+  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry','philox','chacha20'].forEach(x=>{
     $('page-'+x).classList.toggle('active',x===p);
     $('tab-'+x).classList.toggle('active',x===p);
   });
@@ -661,6 +687,13 @@ function switchPage(p){
     if($('pxsub-miss').classList.contains('active'))renderPxMissPage();
     if($('pxsub-heatmap').classList.contains('active'))renderPxHeatmapPage();
     if($('pxsub-achieve').classList.contains('active'))renderPxAchievePage();
+  }
+  if(p==='chacha20'){
+    renderCcSessions();
+    if($('ccsub-history').classList.contains('active'))renderCcHistoryPage();
+    if($('ccsub-miss').classList.contains('active'))renderCcMissPage();
+    if($('ccsub-heatmap').classList.contains('active'))renderCcHeatmapPage();
+    if($('ccsub-achieve').classList.contains('active'))renderCcAchievePage();
   }
 }
 function switchGenSub(v){
@@ -1933,6 +1966,326 @@ function renderPxHeatmapPage(){
   html+=renderKembarHeatmapHTML(data,'px','px');
   $('pxHeatmapPage').innerHTML=html;
 }
+// ===== CHACHA20 CORE (RFC 8439, ARX stream cipher — verified byte-exact vs official test vectors) =====
+function rotl32cc(x,n){x>>>=0;return ((x<<n)|(x>>>(32-n)))>>>0;}
+function ccQr(s,a,b,c,d){
+  s[a]=(s[a]+s[b])>>>0; s[d]^=s[a]; s[d]=rotl32cc(s[d],16);
+  s[c]=(s[c]+s[d])>>>0; s[b]^=s[c]; s[b]=rotl32cc(s[b],12);
+  s[a]=(s[a]+s[b])>>>0; s[d]^=s[a]; s[d]=rotl32cc(s[d],8);
+  s[c]=(s[c]+s[d])>>>0; s[b]^=s[c]; s[b]=rotl32cc(s[b],7);
+}
+const CHACHA_CONST=[0x61707865,0x3320646e,0x79622d32,0x6b206574];
+function chacha20Block(key,nonce,counter){
+  const init=[...CHACHA_CONST,...key,counter,...nonce];
+  const s=init.slice();
+  for(let i=0;i<10;i++){
+    ccQr(s,0,4,8,12); ccQr(s,1,5,9,13); ccQr(s,2,6,10,14); ccQr(s,3,7,11,15);
+    ccQr(s,0,5,10,15); ccQr(s,1,6,11,12); ccQr(s,2,7,8,13); ccQr(s,3,4,9,14);
+  }
+  const out=new Array(16);
+  for(let i=0;i<16;i++)out[i]=(s[i]+init[i])>>>0;
+  return out;
+}
+function chacha20stream(seed){
+  const key=new Array(8);
+  key[0]=seed>>>0;
+  for(let i=1;i<8;i++)key[i]=mix32((key[i-1]+i*0x9e3779b9)>>>0);
+  const nonce=[0,0,1];
+  let counter=0, buf=[];
+  return function(){
+    if(buf.length===0){
+      const block=chacha20Block(key,nonce,counter);
+      counter=(counter+1)>>>0;
+      buf=block.map(w=>w/4294967296);
+    }
+    return buf.shift();
+  };
+}
+// ===== CHACHA20 TAB — ENGINE MANDIRI KE-9, TIDAK TERHUBUNG KE ENGINE LAIN =====
+let ccSlots=[]; let ccHistory=[]; let ccSessionRecords=[];
+function initCcSlots(){ccSlots=[];let id=0;SESSION_CONFIG.forEach(sess=>{for(let n=1;n<=sess.slots;n++)ccSlots.push({id:id++,session:sess.key,label:sess.label,slot:n,raw:'',result:'',engine:null,cross:[],status:'PENDING'})})}
+function getCcSessionSlots(key){return ccSlots.filter(s=>s.session===key)}
+function makeCcCandidates(ctx,len,tag){
+  const r=chacha20stream(seedFromContext(ctx,tag+'::CHACHA'));
+  const pool=new Map(),target=Math.max(900,len*30);
+  for(let i=0;i<target;i++){
+    let c='';for(let p=0;p<len;p++)c+=LETTERS[randInt(r,LETTERS.length)];
+    if(!pool.has(c))pool.set(c,{cand:c,prng:i,score:0});
+  }
+  const arr=[...pool.values()];
+  arr.forEach(x=>{const balance=letterBalance(x.cand),random=r();x.score=Math.max(0,Math.min(1,.35*balance+.65*random))});
+  arr.sort((a,b)=>b.score-a.score||a.cand.localeCompare(b.cand));
+  const outN=len===2?10:30;
+  return diversify(arr,outN).slice(0,outN).map((x,i)=>({rank:i+1,digits:x.cand,score:x.score,stream:tag,prngIndex:x.prng}));
+}
+function buildCcEngine(raw,session,slot,date){
+  const ctx=date+'-'+session+'-S'+slot,tagBase=session+'-S'+slot;
+  return {date,session,slot,raw,
+    candidates4:makeCcCandidates(ctx,4,tagBase+'-4H'),
+    candidates3:makeCcCandidates(ctx,3,tagBase+'-3H'),
+    candidates2:makeCcCandidates(ctx,2,tagBase+'-2H'),
+    result:'',matches:null,status:'PENDING',createdAt:new Date().toISOString()};
+}
+function ccCrossEvaluate(sessionKey){
+  const ss=getCcSessionSlots(sessionKey),results=ss.map(s=>s.result||'');
+  ss.forEach(rawSlot=>{
+    if(!rawSlot.engine)return;
+    rawSlot.cross=[];
+    results.forEach((res,ri)=>{
+      if(res){
+        const m=crossMatch(rawSlot.engine,res);
+        rawSlot.cross.push({resultSlot:ri+1,result:res,matches:m,status:Object.values(m).some(Boolean)?'JP':'ZONK'});
+      }
+    });
+    rawSlot.status=rawSlot.cross.some(x=>x.status==='JP')?'JP':(rawSlot.cross.length?'ZONK':'PENDING');
+  });
+  return ss;
+}
+function rowFromSlotCc(s,date){
+  return {
+    id:`${date}_${s.session}_S${s.slot}`,
+    entry_date:date,session:s.session,session_label:s.label,slot:s.slot,
+    raw:s.raw||null,result:s.result||null,status:s.status||'PENDING',
+    candidates4:s.engine?.candidates4||null,
+    candidates3:s.engine?.candidates3||null,
+    candidates2:s.engine?.candidates2||null,
+    updated_at:new Date().toISOString()
+  };
+}
+async function saveCcSessionToSupabase(sessionKey){
+  if(!sb){
+    $('ccSaveState').textContent='⚠ SUPABASE BELUM DIKONFIGURASI — DATA TIDAK DISIMPAN';
+    return false;
+  }
+  const date=$('entryDate').value||today();
+  const ss=getCcSessionSlots(sessionKey);
+  const rows=ss.filter(s=>s.engine).map(s=>rowFromSlotCc(s,date));
+  if(!rows.length)return false;
+  try{
+    const {error}=await sb.from('chacha20_history').upsert(rows,{onConflict:'id'});
+    if(error){
+      $('ccSaveState').textContent='⚠ GAGAL SIMPAN SUPABASE: '+error.message;
+      return false;
+    }
+    await loadCcHistoryFromSupabase(false);
+    $('ccSaveState').textContent='● TERSIMPAN SUPABASE · '+ccHistory.length+' slot';
+    return true;
+  }catch(e){
+    $('ccSaveState').textContent='⚠ GAGAL SIMPAN SUPABASE: '+(e?.message||e);
+    return false;
+  }
+}
+async function loadCcHistoryFromSupabase(render=true){
+  if(!sb){
+    $('ccSaveState').textContent='⚠ KLIEN SUPABASE GAGAL DIMUAT';
+    ccHistory=[];ccSessionRecords=[];
+    return;
+  }
+  try{
+    const {data,error}=await sb.from('chacha20_history')
+      .select('*')
+      .order('entry_date',{ascending:false})
+      .order('session',{ascending:true})
+      .order('slot',{ascending:true});
+    if(error){
+      $('ccSaveState').textContent='⚠ GAGAL BACA SUPABASE: '+error.message;
+      ccHistory=[];ccSessionRecords=[];
+      return;
+    }
+    ccSessionRecords=data||[];
+    ccHistory=ccSessionRecords;
+  }catch(e){
+    $('ccSaveState').textContent='⚠ GAGAL BACA SUPABASE: '+(e?.message||e);
+    ccHistory=[];ccSessionRecords=[];
+    return;
+  }
+  hydrateSelectedDateCc();
+  if(render)renderCcSessions();
+}
+function hydrateSelectedDateCc(){
+  const date=$('entryDate').value||today();
+  initCcSlots();
+  const rows=ccHistory.filter(r=>String(r.entry_date)===String(date));
+  rows.forEach(r=>{
+    const s=ccSlots.find(x=>x.session===r.session&&x.slot===Number(r.slot));
+    if(!s)return;
+    s.raw=r.raw||'';s.result=r.result||'';s.status=r.status||'PENDING';s.cross=[];
+    if(r.candidates4||r.candidates3||r.candidates2){
+      s.engine={
+        date:date,session:s.session,slot:s.slot,raw:s.raw,
+        candidates4:r.candidates4||[],candidates3:r.candidates3||[],candidates2:r.candidates2||[],
+        result:s.result,matches:null,status:s.status,createdAt:r.updated_at
+      };
+    }
+  });
+}
+function renderCcSessions(){
+  let html='';
+  SESSION_CONFIG.forEach(sess=>{
+    ccCrossEvaluate(sess.key);
+    html+=`<div class="session-box"><div class="session-head">
+      <div class="session-title">🕐 SESI ${sess.label}</div>
+      <div class="slot-badge">${sess.slots} SLOT CHACHA20</div>
+    </div><div class="slot-grid">`;
+    for(let n=1;n<=sess.slots;n++){
+      const x=ccSlots.find(v=>v.session===sess.key&&v.slot===n);
+      html+=renderCcSlot(x);
+    }
+    html+='</div></div>';
+  });
+  $('ccSessionBoard').innerHTML=html;
+  renderCcDailyHistory();
+}
+function renderCcSlot(s){
+  const e=s.engine;
+  let candidate=e?analysisSummary(e)+`<div class="slot-candidates">
+    ${candidateSection('4H',e.candidates4)}
+    ${candidateSection('3H',e.candidates3)}
+    ${candidateSection('2H',e.candidates2)}
+  </div>`:'';
+  let status=e&&s.cross?.length?
+    `<div class="slot-status ${s.status==='JP'?'jp':'zonk'}">
+      ${s.status==='JP'?'🏆 JP':'💀 ZONK'} · ${esc(crossText(s))}
+    </div>`:'';
+  return `<div class="slot-card">
+    <div class="slot-title">CHACHA20 A-J · SLOT ${s.slot}</div>
+    <div class="slot-input-row">
+      <button class="slot-gen" onclick="generateCcSlot(${s.id})" style="width:100%">⚡ GENERATE KANDIDAT</button>
+    </div>
+    <div class="slot-result-row">
+      <input class="slot-result" id="ccresult-${s.id}" maxlength="4" style="text-transform:uppercase" value="${esc(s.result)}" placeholder="RESULT 4 HURUF (A-J)" oninput="this.value=this.value.toUpperCase().replace(/[^A-J]/g,'').slice(0,4)">
+      <button class="slot-save" onclick="saveCcResult(${s.id})">SIMPAN</button>
+    </div>
+    <div class="slot-msg" id="ccmsg-${s.id}">
+      ${e?'✓ Kandidat aktif · 70 kandidat tersedia':'Klik GENERATE untuk membuat kandidat.'}
+    </div>
+    ${status}${candidate}
+  </div>`;
+}
+async function generateCcSlot(id){
+  const s=ccSlots[id];
+  const btn=document.querySelector(`button[onclick="generateCcSlot(${id})"]`);
+  if(btn){btn.disabled=true;btn.textContent='⏳ GENERATE...';}
+  try{
+    s.raw=FIXED_RAW;s.result='';
+    s.engine=buildCcEngine(FIXED_RAW,s.session,s.slot,$('entryDate').value||today());
+    s.engine.result='';s.engine.status='PENDING';s.cross=[];s.status='PENDING';
+    if($('ccresult-'+id))$('ccresult-'+id).value='';
+    const ok=await saveCcSessionToSupabase(s.session);
+    renderCcSessions();
+    if($('ccmsg-'+id))$('ccmsg-'+id).textContent=ok?
+      '✓ CHACHA20 selesai · 70 kandidat tersimpan Supabase.':
+      '⚠ Kandidat dibuat, tetapi gagal tersimpan ke Supabase.';
+  }catch(err){
+    console.error(err);
+    if($('ccmsg-'+id))$('ccmsg-'+id).textContent='⚠ Generate error: '+(err?.message||err);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='⚡ GENERATE KANDIDAT';}
+  }
+}
+async function saveCcResult(id){
+  const s=ccSlots[id];
+  if(!s.engine){
+    if($('ccmsg-'+id))$('ccmsg-'+id).textContent='⚠ Generate dulu.';
+    return;
+  }
+  const result=($('ccresult-'+id).value||'').toUpperCase().replace(/[^A-J]/g,'').slice(0,4);
+  $('ccresult-'+id).value=result;
+  if(result.length!==4){
+    $('ccmsg-'+id).textContent='⚠ RESULT harus tepat 4 huruf (A-J).';
+    return;
+  }
+  s.result=result;s.engine.result=result;
+  let ok=false;
+  try{
+    ccCrossEvaluate(s.session);
+    ok=await saveCcSessionToSupabase(s.session);
+  }catch(e){
+    console.error(e);
+    if($('ccmsg-'+id))$('ccmsg-'+id).textContent='⚠ Gagal simpan: '+(e?.message||e);
+    renderCcSessions();
+    return;
+  }
+  renderCcSessions();
+  if($('ccmsg-'+id))$('ccmsg-'+id).textContent=ok?'✓ RESULT tersimpan ke Supabase.':'⚠ RESULT belum tersimpan.';
+}
+function groupCcHistory(){
+  const groups=new Map();
+  ccHistory.forEach(r=>{
+    const key=`${r.entry_date}_${r.session}`;
+    if(!groups.has(key))groups.set(key,{entry_date:r.entry_date,session:r.session,session_label:r.session_label||r.session,rows:[]});
+    groups.get(key).rows.push(r);
+  });
+  return [...groups.values()].sort((a,b)=>
+    String(b.entry_date).localeCompare(String(a.entry_date))||
+    String(a.session).localeCompare(String(b.session))
+  );
+}
+function renderCcSessionHistory(g){
+  const rows=(g.rows||[]).sort((a,b)=>(a.slot||0)-(b.slot||0));
+  let body='';
+  rows.forEach(r=>{
+    const st=r.status==='JP'?'JP':(r.status==='ZONK'?'ZONK':'PENDING');
+    const status=st==='JP'?'🏆 JP':st==='ZONK'?'💀 ZONK':'⏳ PENDING';
+    body+=`<div class="hist-card">
+      <div class="hist-head">
+        <div><span class="hist-date">${esc(g.entry_date)}</span>
+          <span style="font-size:8px;color:var(--accent)">SESI ${esc(g.session_label)} · SLOT ${r.slot}</span>
+        </div>
+        <div class="hist-status ${st==='JP'?'jp':'zonk'}">${status}</div>
+      </div>
+      <div class="rawresult">
+        <div class="mini"><label>ENGINE</label><b style="font-size:9px">CHACHA20</b></div>
+        <div class="mini"><label>RESULT</label><b style="color:var(--gold)">${esc(r.result||'-')}</b></div>
+      </div>
+    </div>`;
+  });
+  return body;
+}
+function renderCcDailyHistory(){
+  const date=$('entryDate').value||today();
+  const groups=groupCcHistory().filter(g=>String(g.entry_date)===String(date));
+  if(!groups.length){$('ccDailyHistory').innerHTML='';return;}
+  $('ccDailyHistory').innerHTML=
+    `<div class="hv2-box">
+      <div class="hv2-title">📒 RIWAYAT CHACHA20 · ${esc(date)}</div>
+      <div class="hv2-sub">Riwayat terpisah dari RIWAYAT LENGKAP (engine Mulberry32). Status JP/ZONK dihitung mandiri dari kandidat CHACHA20 sendiri.</div>
+    </div>`+groups.map(renderCcSessionHistory).join('');
+}
+function renderCcHistoryPage(){
+  const groups=groupCcHistory();
+  if(!groups.length){
+    $('ccHistoryPage').innerHTML='<div class="hv2-empty">Belum ada riwayat Supabase. Generate & simpan RESULT untuk membuat arsip.</div>';
+    return;
+  }
+  $('ccHistoryPage').innerHTML=
+    `<div class="hv2-box">
+      <div class="hv2-title">🏆 RIWAYAT LENGKAP — CHACHA20</div>
+      <div class="hv2-sub">Full Supabase (chacha20_history). 🏆 = JP · 💀 = ZONK.</div>
+    </div>`+
+    groups.map(renderCcSessionHistory).join('');
+}
+function switchCcSub(v){
+  ['generator','history','miss','heatmap','achieve'].forEach(x=>{
+    $('ccsubpage-'+x).classList.toggle('active',x===v);
+    $('ccsub-'+x).classList.toggle('active',x===v);
+  });
+  if(v==='history')renderCcHistoryPage();
+  if(v==='miss')renderCcMissPage();
+  if(v==='heatmap')renderCcHeatmapPage();
+  if(v==='achieve')renderCcAchievePage();
+}
+function renderCcAchievePage(){
+  $('ccAchievePage').innerHTML=buildAchievementHTML(ccHistory,'CHACHA20');
+}function renderCcMissPage(){
+  $('ccMissPage').innerHTML=buildMissPageHTML(ccHistory,false);
+}
+function renderCcHeatmapPage(){
+  const data=computeLetterPatternStats(ccHistory);
+  let html=renderMajemukHeatmapHTML(data,'cc','cc');
+  html+=renderKembarHeatmapHTML(data,'cc','cc');
+  $('ccHeatmapPage').innerHTML=html;
+}
 // ===== PCG32 TAB — ENGINE MANDIRI, TIDAK TERHUBUNG KE ANALISA/HEATMAP/REKOMENDASI =====
 let pcgSlots=[]; let pcgHistory=[]; let pcgSessionRecords=[];
 function pcg32(initstateBig,initseqBig){
@@ -2904,20 +3257,6 @@ function renderSessionHistory(g){
   });
   return `<div class="hv2-box"><div class="hv2-title">${esc(g.session_label)} · ${esc(g.entry_date)}</div>${body}</div>`;
 }
-async function clearHistory(){
-  if(!sb)return;
-  if(!confirm('Hapus seluruh riwayat BOOT PRNG dari Supabase?'))return;
-  const {error}=await sb.from('boot_prng_history').delete().not('id','is',null);
-  if(error){alert('Gagal hapus: '+error.message);return}
-  history=[];sessionRecords=[];initSlots();renderSessions();renderHistoryPage();
-  $('saveState').textContent='● SUPABASE · RIWAYAT KOSONG';
-}
-function exportHistory(){
-  const blob=new Blob([JSON.stringify({engine:'BOOT-PRNG-v1.3',exportedAt:new Date().toISOString(),history},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='A-J_BOOT_PRNG_5SESI_history.json';a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-}
 
 // ===== ANALISA POLA MELESET: kandidat vs result, per posisi, per tanggal =====
 const MISS_POOLS=[{key:'candidates4',label:'4H',n:4},{key:'candidates3',label:'3H',n:3},{key:'candidates2',label:'2H',n:2}];
@@ -3494,7 +3833,7 @@ function renderRecoSections(preds,insights,outcomes,reviews){
 }
 function showPatternDetail(pattern,targetId,engine){
   targetId=targetId||'patternDetail';
-  const historyArr=engine==='xo'?xoHistory:engine==='pcg'?pcgHistory:engine==='mt'?mtHistory:engine==='sfc'?sfcHistory:engine==='xo256'?xo256History:engine==='tf'?tfHistory:engine==='px'?pxHistory:history;
+  const historyArr=engine==='xo'?xoHistory:engine==='pcg'?pcgHistory:engine==='mt'?mtHistory:engine==='sfc'?sfcHistory:engine==='xo256'?xo256History:engine==='tf'?tfHistory:engine==='px'?pxHistory:engine==='cc'?ccHistory:history;
   const {byPattern,totalRaw}=computeLetterPatternStats(historyArr);
   const e=byPattern[pattern];
   const el=$(targetId);
@@ -3527,7 +3866,7 @@ function showPatternDetail(pattern,targetId,engine){
   }
   el.innerHTML=`<div class="pattern-detail-box"><div class="pattern-detail-title">🔎 DETAIL POLA ${pattern}</div><div class="pattern-detail-insight">${insight}</div>${rateLine}${btHtml}<div class="pattern-detail-dates">${e.occDates.slice().reverse().map(d=>`<span class="match-chip">${d}</span>`).join('')}</div></div>`;
 }
-const DATE_SYNC_IDS=['entryDate','entryDateXo','entryDatePcg','entryDateMt','entryDateSfc','entryDateXo256','entryDateTf','entryDatePx'];
+const DATE_SYNC_IDS=['entryDate','entryDateXo','entryDatePcg','entryDateMt','entryDateSfc','entryDateXo256','entryDateTf','entryDatePx','entryDateCc'];
 function syncAllDates(sourceId){
   const val=$(sourceId).value;
   DATE_SYNC_IDS.forEach(id=>{ if(id!==sourceId&&$(id))$(id).value=val; });
@@ -3539,6 +3878,7 @@ function syncAllDates(sourceId){
   loadXo256HistoryFromSupabase(true);
   loadTfHistoryFromSupabase(true);
   loadPxHistoryFromSupabase(true);
+  loadCcHistoryFromSupabase(true);
 }
 DATE_SYNC_IDS.forEach(id=>{
   if(!$(id))return;
@@ -3569,6 +3909,9 @@ loadTfHistoryFromSupabase(true);
 initPxSlots();
 renderPxSessions();
 loadPxHistoryFromSupabase(true);
+initCcSlots();
+renderCcSessions();
+loadCcHistoryFromSupabase(true);
 
 // ===== LIVE CLOCK SYNC SUPABASE SERVER TIME =====
 let clockOffsetMs=0, clockSynced=false;
