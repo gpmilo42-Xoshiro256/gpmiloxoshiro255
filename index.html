@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="header"><div class="header-tag">SISTEM KANDIDAT EKSPERIMENTAL</div><h1>A-J <em>Modif</em></h1><div class="header-sub">BOOT PRNG · 1 SESI · 30 × 4H · 30 × 3H · 10 × 2H · SUPABASE</div><div id="saveState" style="font-size:8px;color:var(--green);margin-top:4px">● SUPABASE MODE — DATA UTAMA TERSIMPAN DI SUPABASE</div><div id="liveClock" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--gold);margin-top:6px">🕒 --:--:--</div></div>
-<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div></div>
+<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div><div class="tab purple" id="tab-philox" onclick="switchPage('philox')">✖️ PHILOX</div></div>
 <div class="page active" id="page-generator">
   <div class="hv2-box"><div class="hv2-title">🧬 BOOT PRNG — 1 SESI</div><div class="hv2-sub">Engine baru 100% independen. Tampilan mengikuti pola Harian V2: <b style="color:#fff">18.30 = 1 slot</b>. Setiap slot memiliki RAW 6 digit, RESULT 4 digit, dan kandidat BOOT PRNG sendiri.</div></div>
   <div class="uni-input-box"><div class="uni-title">BOOT PRNG · 1 SESI HARIAN · FULL SUPABASE</div><div class="uni-sub">Isi RAW per slot. Generate kandidat 30×4H + 30×3H + 10×2H secara independen. RESULT disimpan per slot.</div><div class="uni-date-row"><span class="uni-date-label">📅 TANGGAL</span><input class="uni-date-input" id="entryDate" type="text" readonly onclick="openCalendar()"><button class="btn" id="calBtn" onclick="openCalendar()" style="flex:0 0 auto">🗓 KALENDER</button></div>
@@ -163,6 +163,25 @@
   <div class="page" id="tfsubpage-heatmap"><div id="tfHeatmapPage"></div></div>
   <div class="page" id="tfsubpage-achieve"><div id="tfAchievePage"></div></div>
 </div>
+<div class="page" id="page-philox">
+  <div class="hv2-box"><div class="hv2-title">✖️ PHILOX4X32-10 — ENGINE MANDIRI</div><div class="hv2-sub">Tab independen memakai algoritma <b style="color:#fff">Philox4x32 (10 ronde)</b> dari keluarga Random123 — Feistel network + perkalian integer (bukan permutasi-cipher seperti Threefry, bukan shift-register seperti Xoshiro), murni <b style="color:#fff">Math.imul</b> tanpa BigInt. Terpisah total dari 7 engine lain. Riwayat, analisa meleset, dan heatmap di bawah dihitung sendiri dari data PHILOX — tidak nyambung ke tab lain.</div></div>
+  <div class="uni-date-row" style="margin-bottom:10px"><span class="uni-date-label">📅 TANGGAL</span><input class="uni-date-input" id="entryDatePx" type="text" readonly onclick="openCalendar()"><button class="btn" onclick="openCalendar()" style="flex:0 0 auto">🗓 KALENDER</button></div>
+  <div class="tabs" style="margin-bottom:8px">
+    <div class="tab active" id="pxsub-generator" onclick="switchPxSub('generator')">🧬 GENERATOR</div>
+    <div class="tab gold" id="pxsub-history" onclick="switchPxSub('history')">🏆 RIWAYAT</div>
+    <div class="tab red" id="pxsub-miss" onclick="switchPxSub('miss')">🎯 ANALISA MELESET</div>
+    <div class="tab purple" id="pxsub-heatmap" onclick="switchPxSub('heatmap')">🔥 HEATMAP</div>
+    <div class="tab" id="pxsub-achieve" onclick="switchPxSub('achieve')">📊 PENCAPAIAN</div>
+  </div>
+  <div class="page active" id="pxsubpage-generator">
+    <div id="pxSaveState" class="statusline"></div>
+    <div id="pxSessionBoard"></div><div id="pxDailyHistory"></div>
+  </div>
+  <div class="page" id="pxsubpage-history"><div id="pxHistoryPage"></div></div>
+  <div class="page" id="pxsubpage-miss"><div id="pxMissPage"></div></div>
+  <div class="page" id="pxsubpage-heatmap"><div id="pxHeatmapPage"></div></div>
+  <div class="page" id="pxsubpage-achieve"><div id="pxAchievePage"></div></div>
+</div>
 <div class="footer-note">BOOT PRNG adalah generator kandidat deterministik/eksperimental, bukan jaminan bahwa hasil acak dapat diprediksi.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -210,6 +229,10 @@ async function fetchDatesWithData(year,month){
   }catch(e){}
   try{
     const {data,error}=await sb.from('threefry_history').select('entry_date').gte('entry_date',start).lte('entry_date',end);
+    if(!error&&data)data.forEach(r=>out.add(String(r.entry_date)));
+  }catch(e){}
+  try{
+    const {data,error}=await sb.from('philox_history').select('entry_date').gte('entry_date',start).lte('entry_date',end);
     if(!error&&data)data.forEach(r=>out.add(String(r.entry_date)));
   }catch(e){}
   return out;
@@ -262,6 +285,7 @@ function pickCalDate(dateStr){
   if($('entryDateSfc'))$('entryDateSfc').value=dateStr;
   if($('entryDateXo256'))$('entryDateXo256').value=dateStr;
   if($('entryDateTf'))$('entryDateTf').value=dateStr;
+  if($('entryDatePx'))$('entryDatePx').value=dateStr;
   closeCalendar();
   loadHistoryFromSupabase(true);
   loadXoHistoryFromSupabase(true);
@@ -270,6 +294,7 @@ function pickCalDate(dateStr){
   loadSfcHistoryFromSupabase(true);
   loadXo256HistoryFromSupabase(true);
   loadTfHistoryFromSupabase(true);
+  loadPxHistoryFromSupabase(true);
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function initSlots(){slots=[];let id=0;SESSION_CONFIG.forEach(sess=>{for(let n=1;n<=sess.slots;n++)slots.push({id:id++,session:sess.key,label:sess.label,slot:n,raw:'',result:'',engine:null})})}
@@ -576,7 +601,7 @@ function renderDailyHistory(){
     groups.map(renderSessionHistory).join('');
 }
 function switchPage(p){
-  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry'].forEach(x=>{
+  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry','philox'].forEach(x=>{
     $('page-'+x).classList.toggle('active',x===p);
     $('tab-'+x).classList.toggle('active',x===p);
   });
@@ -629,6 +654,13 @@ function switchPage(p){
     if($('tfsub-miss').classList.contains('active'))renderTfMissPage();
     if($('tfsub-heatmap').classList.contains('active'))renderTfHeatmapPage();
     if($('tfsub-achieve').classList.contains('active'))renderTfAchievePage();
+  }
+  if(p==='philox'){
+    renderPxSessions();
+    if($('pxsub-history').classList.contains('active'))renderPxHistoryPage();
+    if($('pxsub-miss').classList.contains('active'))renderPxMissPage();
+    if($('pxsub-heatmap').classList.contains('active'))renderPxHeatmapPage();
+    if($('pxsub-achieve').classList.contains('active'))renderPxAchievePage();
   }
 }
 function switchGenSub(v){
@@ -1578,6 +1610,328 @@ function renderTfHeatmapPage(){
   let html=renderMajemukHeatmapHTML(data,'tf','tf');
   html+=renderKembarHeatmapHTML(data,'tf','tf');
   $('tfHeatmapPage').innerHTML=html;
+}
+// ===== PHILOX4X32-10 CORE (Random123, Feistel + perkalian, murni Math.imul tanpa BigInt) =====
+function mulhilo32(a,b){
+  a>>>=0; b>>>=0;
+  const aH=a>>>16, aL=a&0xFFFF, bH=b>>>16, bL=b&0xFFFF;
+  const lo=Math.imul(a,b)>>>0;
+  const ll=aL*bL, mid=aL*bH+aH*bL, hh=aH*bH;
+  const cross=mid*65536+ll;
+  const hi=(hh+Math.floor(cross/4294967296))>>>0;
+  return [lo,hi];
+}
+const PHILOX_M0=0xD2511F53, PHILOX_M1=0xCD9E8D57;
+const PHILOX_W0=0x9E3779B9, PHILOX_W1=0xBB67AE85;
+function philox4x32(ctr0,ctr1,ctr2,ctr3,key0,key1,rounds){
+  rounds=rounds||10;
+  let c0=ctr0>>>0,c1=ctr1>>>0,c2=ctr2>>>0,c3=ctr3>>>0;
+  let k0=key0>>>0,k1=key1>>>0;
+  for(let r=0;r<rounds;r++){
+    const [lo0,hi0]=mulhilo32(PHILOX_M0,c0);
+    const [lo1,hi1]=mulhilo32(PHILOX_M1,c2);
+    const n0=(hi1^c1^k0)>>>0, n1=lo1>>>0, n2=(hi0^c3^k1)>>>0, n3=lo0>>>0;
+    c0=n0;c1=n1;c2=n2;c3=n3;
+    k0=(k0+PHILOX_W0)>>>0; k1=(k1+PHILOX_W1)>>>0;
+  }
+  return [c0,c1,c2,c3];
+}
+function philox32(seed){
+  const key0=seed>>>0, key1=0x1B873593;
+  let counter=0, buf=[];
+  return function(){
+    if(buf.length===0){
+      const [c0,c1,c2,c3]=philox4x32(counter,0,0,0,key0,key1,10);
+      counter=(counter+1)>>>0;
+      buf=[c0/4294967296,c1/4294967296,c2/4294967296,c3/4294967296];
+    }
+    return buf.shift();
+  };
+}
+// ===== PHILOX TAB — ENGINE MANDIRI KE-8, TIDAK TERHUBUNG KE ENGINE LAIN =====
+let pxSlots=[]; let pxHistory=[]; let pxSessionRecords=[];
+function initPxSlots(){pxSlots=[];let id=0;SESSION_CONFIG.forEach(sess=>{for(let n=1;n<=sess.slots;n++)pxSlots.push({id:id++,session:sess.key,label:sess.label,slot:n,raw:'',result:'',engine:null,cross:[],status:'PENDING'})})}
+function getPxSessionSlots(key){return pxSlots.filter(s=>s.session===key)}
+function makePxCandidates(ctx,len,tag){
+  const r=philox32(seedFromContext(ctx,tag+'::PHILOX'));
+  const pool=new Map(),target=Math.max(900,len*30);
+  for(let i=0;i<target;i++){
+    let c='';for(let p=0;p<len;p++)c+=LETTERS[randInt(r,LETTERS.length)];
+    if(!pool.has(c))pool.set(c,{cand:c,prng:i,score:0});
+  }
+  const arr=[...pool.values()];
+  arr.forEach(x=>{const balance=letterBalance(x.cand),random=r();x.score=Math.max(0,Math.min(1,.35*balance+.65*random))});
+  arr.sort((a,b)=>b.score-a.score||a.cand.localeCompare(b.cand));
+  const outN=len===2?10:30;
+  return diversify(arr,outN).slice(0,outN).map((x,i)=>({rank:i+1,digits:x.cand,score:x.score,stream:tag,prngIndex:x.prng}));
+}
+function buildPxEngine(raw,session,slot,date){
+  const ctx=date+'-'+session+'-S'+slot,tagBase=session+'-S'+slot;
+  return {date,session,slot,raw,
+    candidates4:makePxCandidates(ctx,4,tagBase+'-4H'),
+    candidates3:makePxCandidates(ctx,3,tagBase+'-3H'),
+    candidates2:makePxCandidates(ctx,2,tagBase+'-2H'),
+    result:'',matches:null,status:'PENDING',createdAt:new Date().toISOString()};
+}
+function pxCrossEvaluate(sessionKey){
+  const ss=getPxSessionSlots(sessionKey),results=ss.map(s=>s.result||'');
+  ss.forEach(rawSlot=>{
+    if(!rawSlot.engine)return;
+    rawSlot.cross=[];
+    results.forEach((res,ri)=>{
+      if(res){
+        const m=crossMatch(rawSlot.engine,res);
+        rawSlot.cross.push({resultSlot:ri+1,result:res,matches:m,status:Object.values(m).some(Boolean)?'JP':'ZONK'});
+      }
+    });
+    rawSlot.status=rawSlot.cross.some(x=>x.status==='JP')?'JP':(rawSlot.cross.length?'ZONK':'PENDING');
+  });
+  return ss;
+}
+function rowFromSlotPx(s,date){
+  return {
+    id:`${date}_${s.session}_S${s.slot}`,
+    entry_date:date,session:s.session,session_label:s.label,slot:s.slot,
+    raw:s.raw||null,result:s.result||null,status:s.status||'PENDING',
+    candidates4:s.engine?.candidates4||null,
+    candidates3:s.engine?.candidates3||null,
+    candidates2:s.engine?.candidates2||null,
+    updated_at:new Date().toISOString()
+  };
+}
+async function savePxSessionToSupabase(sessionKey){
+  if(!sb){
+    $('pxSaveState').textContent='⚠ SUPABASE BELUM DIKONFIGURASI — DATA TIDAK DISIMPAN';
+    return false;
+  }
+  const date=$('entryDate').value||today();
+  const ss=getPxSessionSlots(sessionKey);
+  const rows=ss.filter(s=>s.engine).map(s=>rowFromSlotPx(s,date));
+  if(!rows.length)return false;
+  try{
+    const {error}=await sb.from('philox_history').upsert(rows,{onConflict:'id'});
+    if(error){
+      $('pxSaveState').textContent='⚠ GAGAL SIMPAN SUPABASE: '+error.message;
+      return false;
+    }
+    await loadPxHistoryFromSupabase(false);
+    $('pxSaveState').textContent='● TERSIMPAN SUPABASE · '+pxHistory.length+' slot';
+    return true;
+  }catch(e){
+    $('pxSaveState').textContent='⚠ GAGAL SIMPAN SUPABASE: '+(e?.message||e);
+    return false;
+  }
+}
+async function loadPxHistoryFromSupabase(render=true){
+  if(!sb){
+    $('pxSaveState').textContent='⚠ KLIEN SUPABASE GAGAL DIMUAT';
+    pxHistory=[];pxSessionRecords=[];
+    return;
+  }
+  try{
+    const {data,error}=await sb.from('philox_history')
+      .select('*')
+      .order('entry_date',{ascending:false})
+      .order('session',{ascending:true})
+      .order('slot',{ascending:true});
+    if(error){
+      $('pxSaveState').textContent='⚠ GAGAL BACA SUPABASE: '+error.message;
+      pxHistory=[];pxSessionRecords=[];
+      return;
+    }
+    pxSessionRecords=data||[];
+    pxHistory=pxSessionRecords;
+  }catch(e){
+    $('pxSaveState').textContent='⚠ GAGAL BACA SUPABASE: '+(e?.message||e);
+    pxHistory=[];pxSessionRecords=[];
+    return;
+  }
+  hydrateSelectedDatePx();
+  if(render)renderPxSessions();
+}
+function hydrateSelectedDatePx(){
+  const date=$('entryDate').value||today();
+  initPxSlots();
+  const rows=pxHistory.filter(r=>String(r.entry_date)===String(date));
+  rows.forEach(r=>{
+    const s=pxSlots.find(x=>x.session===r.session&&x.slot===Number(r.slot));
+    if(!s)return;
+    s.raw=r.raw||'';s.result=r.result||'';s.status=r.status||'PENDING';s.cross=[];
+    if(r.candidates4||r.candidates3||r.candidates2){
+      s.engine={
+        date:date,session:s.session,slot:s.slot,raw:s.raw,
+        candidates4:r.candidates4||[],candidates3:r.candidates3||[],candidates2:r.candidates2||[],
+        result:s.result,matches:null,status:s.status,createdAt:r.updated_at
+      };
+    }
+  });
+}
+function renderPxSessions(){
+  let html='';
+  SESSION_CONFIG.forEach(sess=>{
+    pxCrossEvaluate(sess.key);
+    html+=`<div class="session-box"><div class="session-head">
+      <div class="session-title">🕐 SESI ${sess.label}</div>
+      <div class="slot-badge">${sess.slots} SLOT PHILOX4X32</div>
+    </div><div class="slot-grid">`;
+    for(let n=1;n<=sess.slots;n++){
+      const x=pxSlots.find(v=>v.session===sess.key&&v.slot===n);
+      html+=renderPxSlot(x);
+    }
+    html+='</div></div>';
+  });
+  $('pxSessionBoard').innerHTML=html;
+  renderPxDailyHistory();
+}
+function renderPxSlot(s){
+  const e=s.engine;
+  let candidate=e?analysisSummary(e)+`<div class="slot-candidates">
+    ${candidateSection('4H',e.candidates4)}
+    ${candidateSection('3H',e.candidates3)}
+    ${candidateSection('2H',e.candidates2)}
+  </div>`:'';
+  let status=e&&s.cross?.length?
+    `<div class="slot-status ${s.status==='JP'?'jp':'zonk'}">
+      ${s.status==='JP'?'🏆 JP':'💀 ZONK'} · ${esc(crossText(s))}
+    </div>`:'';
+  return `<div class="slot-card">
+    <div class="slot-title">PHILOX4X32 A-J · SLOT ${s.slot}</div>
+    <div class="slot-input-row">
+      <button class="slot-gen" onclick="generatePxSlot(${s.id})" style="width:100%">⚡ GENERATE KANDIDAT</button>
+    </div>
+    <div class="slot-result-row">
+      <input class="slot-result" id="pxresult-${s.id}" maxlength="4" style="text-transform:uppercase" value="${esc(s.result)}" placeholder="RESULT 4 HURUF (A-J)" oninput="this.value=this.value.toUpperCase().replace(/[^A-J]/g,'').slice(0,4)">
+      <button class="slot-save" onclick="savePxResult(${s.id})">SIMPAN</button>
+    </div>
+    <div class="slot-msg" id="pxmsg-${s.id}">
+      ${e?'✓ Kandidat aktif · 70 kandidat tersedia':'Klik GENERATE untuk membuat kandidat.'}
+    </div>
+    ${status}${candidate}
+  </div>`;
+}
+async function generatePxSlot(id){
+  const s=pxSlots[id];
+  const btn=document.querySelector(`button[onclick="generatePxSlot(${id})"]`);
+  if(btn){btn.disabled=true;btn.textContent='⏳ GENERATE...';}
+  try{
+    s.raw=FIXED_RAW;s.result='';
+    s.engine=buildPxEngine(FIXED_RAW,s.session,s.slot,$('entryDate').value||today());
+    s.engine.result='';s.engine.status='PENDING';s.cross=[];s.status='PENDING';
+    if($('pxresult-'+id))$('pxresult-'+id).value='';
+    const ok=await savePxSessionToSupabase(s.session);
+    renderPxSessions();
+    if($('pxmsg-'+id))$('pxmsg-'+id).textContent=ok?
+      '✓ PHILOX4X32 selesai · 70 kandidat tersimpan Supabase.':
+      '⚠ Kandidat dibuat, tetapi gagal tersimpan ke Supabase.';
+  }catch(err){
+    console.error(err);
+    if($('pxmsg-'+id))$('pxmsg-'+id).textContent='⚠ Generate error: '+(err?.message||err);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='⚡ GENERATE KANDIDAT';}
+  }
+}
+async function savePxResult(id){
+  const s=pxSlots[id];
+  if(!s.engine){
+    if($('pxmsg-'+id))$('pxmsg-'+id).textContent='⚠ Generate dulu.';
+    return;
+  }
+  const result=($('pxresult-'+id).value||'').toUpperCase().replace(/[^A-J]/g,'').slice(0,4);
+  $('pxresult-'+id).value=result;
+  if(result.length!==4){
+    $('pxmsg-'+id).textContent='⚠ RESULT harus tepat 4 huruf (A-J).';
+    return;
+  }
+  s.result=result;s.engine.result=result;
+  let ok=false;
+  try{
+    pxCrossEvaluate(s.session);
+    ok=await savePxSessionToSupabase(s.session);
+  }catch(e){
+    console.error(e);
+    if($('pxmsg-'+id))$('pxmsg-'+id).textContent='⚠ Gagal simpan: '+(e?.message||e);
+    renderPxSessions();
+    return;
+  }
+  renderPxSessions();
+  if($('pxmsg-'+id))$('pxmsg-'+id).textContent=ok?'✓ RESULT tersimpan ke Supabase.':'⚠ RESULT belum tersimpan.';
+}
+function groupPxHistory(){
+  const groups=new Map();
+  pxHistory.forEach(r=>{
+    const key=`${r.entry_date}_${r.session}`;
+    if(!groups.has(key))groups.set(key,{entry_date:r.entry_date,session:r.session,session_label:r.session_label||r.session,rows:[]});
+    groups.get(key).rows.push(r);
+  });
+  return [...groups.values()].sort((a,b)=>
+    String(b.entry_date).localeCompare(String(a.entry_date))||
+    String(a.session).localeCompare(String(b.session))
+  );
+}
+function renderPxSessionHistory(g){
+  const rows=(g.rows||[]).sort((a,b)=>(a.slot||0)-(b.slot||0));
+  let body='';
+  rows.forEach(r=>{
+    const st=r.status==='JP'?'JP':(r.status==='ZONK'?'ZONK':'PENDING');
+    const status=st==='JP'?'🏆 JP':st==='ZONK'?'💀 ZONK':'⏳ PENDING';
+    body+=`<div class="hist-card">
+      <div class="hist-head">
+        <div><span class="hist-date">${esc(g.entry_date)}</span>
+          <span style="font-size:8px;color:var(--accent)">SESI ${esc(g.session_label)} · SLOT ${r.slot}</span>
+        </div>
+        <div class="hist-status ${st==='JP'?'jp':'zonk'}">${status}</div>
+      </div>
+      <div class="rawresult">
+        <div class="mini"><label>ENGINE</label><b style="font-size:9px">PHILOX4X32</b></div>
+        <div class="mini"><label>RESULT</label><b style="color:var(--gold)">${esc(r.result||'-')}</b></div>
+      </div>
+    </div>`;
+  });
+  return body;
+}
+function renderPxDailyHistory(){
+  const date=$('entryDate').value||today();
+  const groups=groupPxHistory().filter(g=>String(g.entry_date)===String(date));
+  if(!groups.length){$('pxDailyHistory').innerHTML='';return;}
+  $('pxDailyHistory').innerHTML=
+    `<div class="hv2-box">
+      <div class="hv2-title">📒 RIWAYAT PHILOX4X32 · ${esc(date)}</div>
+      <div class="hv2-sub">Riwayat terpisah dari RIWAYAT LENGKAP (engine Mulberry32). Status JP/ZONK dihitung mandiri dari kandidat PHILOX4X32 sendiri.</div>
+    </div>`+groups.map(renderPxSessionHistory).join('');
+}
+function renderPxHistoryPage(){
+  const groups=groupPxHistory();
+  if(!groups.length){
+    $('pxHistoryPage').innerHTML='<div class="hv2-empty">Belum ada riwayat Supabase. Generate & simpan RESULT untuk membuat arsip.</div>';
+    return;
+  }
+  $('pxHistoryPage').innerHTML=
+    `<div class="hv2-box">
+      <div class="hv2-title">🏆 RIWAYAT LENGKAP — PHILOX4X32</div>
+      <div class="hv2-sub">Full Supabase (philox_history). 🏆 = JP · 💀 = ZONK.</div>
+    </div>`+
+    groups.map(renderPxSessionHistory).join('');
+}
+function switchPxSub(v){
+  ['generator','history','miss','heatmap','achieve'].forEach(x=>{
+    $('pxsubpage-'+x).classList.toggle('active',x===v);
+    $('pxsub-'+x).classList.toggle('active',x===v);
+  });
+  if(v==='history')renderPxHistoryPage();
+  if(v==='miss')renderPxMissPage();
+  if(v==='heatmap')renderPxHeatmapPage();
+  if(v==='achieve')renderPxAchievePage();
+}
+function renderPxAchievePage(){
+  $('pxAchievePage').innerHTML=buildAchievementHTML(pxHistory,'PHILOX4X32');
+}function renderPxMissPage(){
+  $('pxMissPage').innerHTML=buildMissPageHTML(pxHistory,false);
+}
+function renderPxHeatmapPage(){
+  const data=computeLetterPatternStats(pxHistory);
+  let html=renderMajemukHeatmapHTML(data,'px','px');
+  html+=renderKembarHeatmapHTML(data,'px','px');
+  $('pxHeatmapPage').innerHTML=html;
 }
 // ===== PCG32 TAB — ENGINE MANDIRI, TIDAK TERHUBUNG KE ANALISA/HEATMAP/REKOMENDASI =====
 let pcgSlots=[]; let pcgHistory=[]; let pcgSessionRecords=[];
@@ -3140,7 +3494,7 @@ function renderRecoSections(preds,insights,outcomes,reviews){
 }
 function showPatternDetail(pattern,targetId,engine){
   targetId=targetId||'patternDetail';
-  const historyArr=engine==='xo'?xoHistory:engine==='pcg'?pcgHistory:engine==='mt'?mtHistory:engine==='sfc'?sfcHistory:engine==='xo256'?xo256History:engine==='tf'?tfHistory:history;
+  const historyArr=engine==='xo'?xoHistory:engine==='pcg'?pcgHistory:engine==='mt'?mtHistory:engine==='sfc'?sfcHistory:engine==='xo256'?xo256History:engine==='tf'?tfHistory:engine==='px'?pxHistory:history;
   const {byPattern,totalRaw}=computeLetterPatternStats(historyArr);
   const e=byPattern[pattern];
   const el=$(targetId);
@@ -3173,7 +3527,7 @@ function showPatternDetail(pattern,targetId,engine){
   }
   el.innerHTML=`<div class="pattern-detail-box"><div class="pattern-detail-title">🔎 DETAIL POLA ${pattern}</div><div class="pattern-detail-insight">${insight}</div>${rateLine}${btHtml}<div class="pattern-detail-dates">${e.occDates.slice().reverse().map(d=>`<span class="match-chip">${d}</span>`).join('')}</div></div>`;
 }
-const DATE_SYNC_IDS=['entryDate','entryDateXo','entryDatePcg','entryDateMt','entryDateSfc','entryDateXo256','entryDateTf'];
+const DATE_SYNC_IDS=['entryDate','entryDateXo','entryDatePcg','entryDateMt','entryDateSfc','entryDateXo256','entryDateTf','entryDatePx'];
 function syncAllDates(sourceId){
   const val=$(sourceId).value;
   DATE_SYNC_IDS.forEach(id=>{ if(id!==sourceId&&$(id))$(id).value=val; });
@@ -3184,6 +3538,7 @@ function syncAllDates(sourceId){
   loadSfcHistoryFromSupabase(true);
   loadXo256HistoryFromSupabase(true);
   loadTfHistoryFromSupabase(true);
+  loadPxHistoryFromSupabase(true);
 }
 DATE_SYNC_IDS.forEach(id=>{
   if(!$(id))return;
@@ -3211,6 +3566,9 @@ loadXo256HistoryFromSupabase(true);
 initTfSlots();
 renderTfSessions();
 loadTfHistoryFromSupabase(true);
+initPxSlots();
+renderPxSessions();
+loadPxHistoryFromSupabase(true);
 
 // ===== LIVE CLOCK SYNC SUPABASE SERVER TIME =====
 let clockOffsetMs=0, clockSynced=false;
