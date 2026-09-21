@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A-J Modif — BOOT PRNG</title>
+<title>GP-All Mode — BOOT PRNG</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
 :root{--bg:#060810;--panel:#0c0e1a;--panel2:#101420;--border:#1a1f35;--accent:#00e5ff;--accent2:#ff3d71;--green:#00e676;--gold:#ffc947;--purple:#b388ff;--orange:#ff9100;--red:#ff4444;--text:#cdd8f0;--dim:#4a5570;--dim2:#2a3050}
@@ -24,11 +24,11 @@
 </style>
 </head>
 <body>
-<div class="header"><div class="header-tag">SISTEM KANDIDAT EKSPERIMENTAL</div><h1>A-J <em>Modif</em></h1><div class="header-sub">BOOT PRNG · 1 SESI · 30 × 4H · 30 × 3H · 10 × 2H · SUPABASE</div><div id="saveState" style="font-size:8px;color:var(--green);margin-top:4px">● SUPABASE MODE — DATA UTAMA TERSIMPAN DI SUPABASE</div><div id="liveClock" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--gold);margin-top:6px">🕒 --:--:--</div></div>
+<div class="header"><div class="header-tag">SISTEM KANDIDAT EKSPERIMENTAL</div><h1>GP-All <em>Mode</em></h1><div class="header-sub">BOOT PRNG · 1 SESI · 30 × 4H · 30 × 3H · 10 × 2H · SUPABASE</div><div id="saveState" style="font-size:8px;color:var(--green);margin-top:4px">● SUPABASE MODE — DATA UTAMA TERSIMPAN DI SUPABASE</div><div id="liveClock" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--gold);margin-top:6px">🕒 --:--:--</div></div>
 <div id="calPopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center" onclick="if(event.target===this)closeCalendar()">
   <div id="calPopup" style="background:var(--panel);border:2px solid var(--purple);border-radius:12px;padding:14px;width:min(320px,90vw);max-height:80vh;overflow:auto"></div>
 </div>
-<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div><div class="tab purple" id="tab-philox" onclick="switchPage('philox')">✖️ PHILOX</div><div class="tab purple" id="tab-chacha20" onclick="switchPage('chacha20')">🔒 CHACHA20</div></div>
+<div class="tabs"><div class="tab active" id="tab-generator" onclick="switchPage('generator')">🧬 MULBERRY32</div><div class="tab purple" id="tab-xoshiro" onclick="switchPage('xoshiro')">🎰 XOSHIRO128</div><div class="tab purple" id="tab-pcg32" onclick="switchPage('pcg32')">🎲 PCG32</div><div class="tab purple" id="tab-mt19937" onclick="switchPage('mt19937')">🌀 MT19937</div><div class="tab purple" id="tab-sfc64" onclick="switchPage('sfc64')">🌪️ SFC64</div><div class="tab purple" id="tab-xoshiro256" onclick="switchPage('xoshiro256')">🎰 XOSHIRO256</div><div class="tab purple" id="tab-threefry" onclick="switchPage('threefry')">🔐 THREEFRY</div><div class="tab purple" id="tab-philox" onclick="switchPage('philox')">✖️ PHILOX</div><div class="tab purple" id="tab-chacha20" onclick="switchPage('chacha20')">🔒 CHACHA20</div><div class="tab" id="tab-summary" onclick="switchPage('summary')">🏅 RANGKUMAN</div></div>
 <div class="page active" id="page-generator">
   <div class="hv2-box"><div class="hv2-title">🧬 BOOT PRNG — 1 SESI</div><div class="hv2-sub">Engine baru 100% independen. Tampilan mengikuti pola Harian V2: <b style="color:#fff">18.30 = 1 slot</b>. Setiap slot memiliki RAW 6 digit, RESULT 4 digit, dan kandidat BOOT PRNG sendiri.</div></div>
   <div class="uni-input-box"><div class="uni-title">BOOT PRNG · 1 SESI HARIAN · FULL SUPABASE</div><div class="uni-sub">Isi RAW per slot. Generate kandidat 30×4H + 30×3H + 10×2H secara independen. RESULT disimpan per slot.</div><div class="uni-date-row"><span class="uni-date-label">📅 TANGGAL</span><input class="uni-date-input" id="entryDate" type="text" readonly onclick="openCalendar()"><button class="btn" id="calBtn" onclick="openCalendar()" style="flex:0 0 auto">🗓 KALENDER</button></div>
@@ -201,6 +201,9 @@
   <div class="page" id="ccsubpage-miss"><div id="ccMissPage"></div></div>
   <div class="page" id="ccsubpage-heatmap"><div id="ccHeatmapPage"></div></div>
   <div class="page" id="ccsubpage-achieve"><div id="ccAchievePage"></div></div>
+</div>
+<div class="page" id="page-summary">
+  <div id="summaryPage"></div>
 </div>
 <div class="footer-note">BOOT PRNG adalah generator kandidat deterministik/eksperimental, bukan jaminan bahwa hasil acak dapat diprediksi.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -627,7 +630,7 @@ function renderDailyHistory(){
     groups.map(renderSessionHistory).join('');
 }
 function switchPage(p){
-  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry','philox','chacha20'].forEach(x=>{
+  ['generator','xoshiro','pcg32','mt19937','sfc64','xoshiro256','threefry','philox','chacha20','summary'].forEach(x=>{
     $('page-'+x).classList.toggle('active',x===p);
     $('tab-'+x).classList.toggle('active',x===p);
   });
@@ -694,6 +697,9 @@ function switchPage(p){
     if($('ccsub-miss').classList.contains('active'))renderCcMissPage();
     if($('ccsub-heatmap').classList.contains('active'))renderCcHeatmapPage();
     if($('ccsub-achieve').classList.contains('active'))renderCcAchievePage();
+  }
+  if(p==='summary'){
+    renderSummaryPage();
   }
 }
 function switchGenSub(v){
@@ -3333,11 +3339,6 @@ function buildAchievementHTML(historyArr,label){
     <div class="miss-pool-sub">Kandidat slot sendiri cocok dengan RESULT slot itu sendiri.</div>
     ${cellRow(tally.self)}
   </div>
-  <div class="miss-summary" style="border-color:var(--purple)">
-    <div class="miss-summary-title" style="color:var(--purple)">🔀 JP "CROSS"</div>
-    <div class="miss-pool-sub">Kandidat suatu slot cocok dengan RESULT slot tetangga (sesi sama). Selalu 0 selama tiap sesi cuma 1 slot.</div>
-    ${cellRow(tally.cross)}
-  </div>
   <div class="hv2-box" style="border-color:var(--gold)">
     <div class="hv2-title" style="color:var(--gold)">🔤 SCORING HURUF RESULT (A-J)</div>
     <div class="hv2-sub">Jumlah data: <b>${total} baris</b>. Kemunculan tiap huruf di seluruh posisi RESULT yang tersimpan &mdash; pakai ini untuk melihat huruf mana yang jarang/tak pernah keluar, supaya polanya bisa disederhanakan.</div>
@@ -3345,6 +3346,73 @@ function buildAchievementHTML(historyArr,label){
       ${LETTERS.map((l,i)=>`<div class="miss-pos-cell"><small>${l}</small><b>${freq[i]}x</b></div>`).join('')}
     </div>
   </div>`;
+}
+// ===== TAB RANGKUMAN — read-only murni, baca 9 array history yang sudah ada, tidak menyentuh/menulis apa pun =====
+function computeRankStats(historyArr){
+  const ranks={H4:{},H3:{},H2:{}};
+  (historyArr||[]).forEach(r=>{
+    if(!r.result||String(r.result).length!==4)return;
+    const h4=matchesFor(r.candidates4,r.result,4); if(h4)ranks.H4[h4]=(ranks.H4[h4]||0)+1;
+    const h3=matchesFor(r.candidates3,r.result,3); if(h3)ranks.H3[h3]=(ranks.H3[h3]||0)+1;
+    const h2=matchesFor(r.candidates2,r.result,2); if(h2)ranks.H2[h2]=(ranks.H2[h2]||0)+1;
+  });
+  return ranks;
+}
+function rankListHTML(label,rankMap){
+  const entries=Object.keys(rankMap).map(Number).sort((a,b)=>a-b);
+  if(!entries.length)return `<div class="hv2-mode-title" style="margin-top:6px">${label}</div><div class="miss-pool-sub">Belum ada JP untuk pool ini.</div>`;
+  const items=entries.map(rk=>`<div class="hv2-item"><span class="hv2-rank">no ${rk}</span><span class="hv2-cand">= ${rankMap[rk]}x</span></div>`).join('');
+  return `<div class="hv2-mode-title" style="margin-top:6px">${label}</div><div class="hv2-list">${items}</div>`;
+}
+function summaryCellRow(t){
+  return `<div class="miss-pos-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="miss-pos-cell"><small>4H</small><b>${t.H4}x</b></div>
+    <div class="miss-pos-cell"><small>3H</small><b>${t.H3}x</b></div>
+    <div class="miss-pos-cell"><small>2H</small><b>${t.H2}x</b></div>
+  </div>`;
+}
+function renderSummaryPage(){
+  const engines=[
+    {label:'Mulberry32', arr:history},
+    {label:'Xoshiro128++', arr:xoHistory},
+    {label:'PCG32', arr:pcgHistory},
+    {label:'MT19937', arr:mtHistory},
+    {label:'SFC64', arr:sfcHistory},
+    {label:'Xoshiro256++', arr:xo256History},
+    {label:'Threefry2x64-20', arr:tfHistory},
+    {label:'Philox4x32-10', arr:pxHistory},
+    {label:'ChaCha20', arr:ccHistory},
+  ];
+  const grand={total:0, self:{H4:0,H3:0,H2:0}, cross:{H4:0,H3:0,H2:0}};
+  const cards=engines.map(e=>{
+    const {total,tally}=computeAchievement(e.arr);
+    const rankStats=computeRankStats(e.arr);
+    grand.total+=total;
+    grand.self.H4+=tally.self.H4; grand.self.H3+=tally.self.H3; grand.self.H2+=tally.self.H2;
+    grand.cross.H4+=tally.cross.H4; grand.cross.H3+=tally.cross.H3; grand.cross.H2+=tally.cross.H2;
+    return `<div class="hv2-box">
+      <div class="hv2-title" style="font-size:13px">${esc(e.label)} <small style="color:var(--dim);font-weight:400">· ${total} data</small></div>
+      <div class="miss-summary" style="border-color:var(--green);margin-top:6px">
+        <div class="miss-summary-title" style="color:var(--green);font-size:10px">🏆 JP SELF</div>
+        ${summaryCellRow(tally.self)}
+      </div>
+      <div class="miss-summary" style="border-color:var(--accent)">
+        <div class="miss-summary-title" style="color:var(--accent);font-size:10px">🎯 RANKING KANDIDAT JP (self)</div>
+        <div class="miss-pool-sub">Nomor urut kandidat yang pernah cocok dengan RESULT — makin data bertambah, makin kelihatan pola nomor mana yang sering/tak pernah kena.</div>
+        ${rankListHTML('4H',rankStats.H4)}
+        ${rankListHTML('3H',rankStats.H3)}
+        ${rankListHTML('2H',rankStats.H2)}
+      </div>
+    </div>`;
+  }).join('');
+  const html=`<div class="hv2-box"><div class="hv2-title">🏅 RANGKUMAN PENCAPAIAN — 9 ENGINE</div><div class="hv2-sub">Tab ini murni membaca hasil dari 9 tab lain (Mulberry32 s/d ChaCha20) tanpa menulis atau mengubah data apa pun di tab manapun — 100% independen, cuma menampilkan. Angka otomatis mengikuti data terbaru yang sudah tersimpan di masing-masing engine.</div></div>
+  <div class="hv2-box" style="border-color:var(--gold)">
+    <div class="hv2-title" style="color:var(--gold)">TOTAL GABUNGAN 9 ENGINE</div>
+    <div class="miss-pos-cell" style="max-width:180px;margin-bottom:8px"><b style="font-size:16px">${grand.total}</b><small>total RESULT tersimpan</small></div>
+    <div class="miss-summary" style="border-color:var(--green)"><div class="miss-summary-title" style="color:var(--green)">🏆 JP SELF (gabungan)</div>${summaryCellRow(grand.self)}</div>
+  </div>
+  ${cards}`;
+  $('summaryPage').innerHTML=html;
 }
 function computeMissAnalysis(historyArr=history){
   const rows=[];const posStats={};
